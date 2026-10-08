@@ -1,15 +1,30 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea.
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Артефакты сборки (APK для RuStore!)
+*.apk
+*.aab
+*.aar
+*.dex
+*.class
+
+# КЛЮЧИ ПОДПИСИ — никогда не коммитить!
+*.jks
+*.keystore
+*.p12
+
+# Firebase (понадобится позже)
+google-services.json
+
+# Мусор
+*.log
+*.swp
+Thumbs.db
