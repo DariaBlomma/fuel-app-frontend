@@ -41,8 +41,6 @@ class AuthLoginViewModel : ViewModel() {
         _rememberMe.update { value }
     }
 
-    fun onForgotPassword() {}
-
     fun onLoginClick() {
         if (_uiState.value is AuthLoginUiState.Loading) return
 

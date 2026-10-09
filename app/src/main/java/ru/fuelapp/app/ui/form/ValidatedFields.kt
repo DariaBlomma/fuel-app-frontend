@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -19,17 +21,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.fuelapp.app.R
 
 @Composable
 fun ValidatedTextField(
@@ -38,6 +41,7 @@ fun ValidatedTextField(
     modifier: Modifier = Modifier,
     required: Boolean = true,
     autoFocus: Boolean = false,
+    showErrorText: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     ValidatedFieldCore(
@@ -46,6 +50,7 @@ fun ValidatedTextField(
         modifier = modifier,
         required = required,
         autoFocus = autoFocus,
+        showErrorText = showErrorText,
         keyboardOptions = keyboardOptions,
         visualTransformation = VisualTransformation.None,
         trailingIcon = null
@@ -57,7 +62,8 @@ fun ValidatedPasswordField(
     field: FieldState<String>,
     label: String,
     modifier: Modifier = Modifier,
-    required: Boolean = true
+    required: Boolean = true,
+    showErrorText: Boolean = true
 ) {
     var visible by remember { mutableStateOf(false) }
 
@@ -67,11 +73,17 @@ fun ValidatedPasswordField(
         modifier = modifier,
         required = required,
         autoFocus = false,
+        showErrorText = showErrorText,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { visible = !visible }) {
-                Text(if (visible) "👁‍" else "👁‍🗨")
+                Icon(
+                    painter = painterResource(id = if (visible) R.drawable.ic_eye_off else R.drawable.ic_eye),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Unspecified
+                )
             }
         }
     )
@@ -84,6 +96,7 @@ private fun ValidatedFieldCore(
     modifier: Modifier,
     required: Boolean,
     autoFocus: Boolean,
+    showErrorText: Boolean,
     keyboardOptions: KeyboardOptions,
     visualTransformation: VisualTransformation,
     trailingIcon: (@Composable () -> Unit)?
@@ -107,7 +120,9 @@ private fun ValidatedFieldCore(
                     text = "*",
                     color = Color(0xFFE53935),
                     fontSize = 16.sp,
-                    modifier = Modifier.offset(y = 8.dp)
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .offset(y = 8.dp)
                 )
             }
         }
@@ -143,9 +158,11 @@ private fun ValidatedFieldCore(
             trailingIcon = trailingIcon,
             singleLine = true,
             isError = error != null,
-            supportingText = error?.let { message ->
-                { Text(message, color = Color(0xFFE53935)) }
-            }
+            supportingText = if (showErrorText) {
+                error?.let { message ->
+                    { Text(message, color = Color(0xFFE53935)) }
+                }
+            } else null
         )
     }
 }

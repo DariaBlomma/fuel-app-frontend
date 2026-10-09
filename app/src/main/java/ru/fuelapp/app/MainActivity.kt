@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import ru.fuelapp.app.ui.auth.AuthLoginScreen
+import ru.fuelapp.app.ui.auth.AuthNavGraph
 import ru.fuelapp.app.ui.theme.FuelAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FuelAppTheme {
-                AuthLoginScreen()
+                AuthNavGraph(
+                    onAuthSuccess = { /* сюда позже повесим переход в основной поток */ }
+                )
             }
         }
     }

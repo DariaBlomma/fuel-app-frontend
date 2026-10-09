@@ -14,30 +14,27 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.fuelapp.app.ui.components.FuelAppLogo
-import ru.fuelapp.app.ui.form.ValidatedPasswordField
 import ru.fuelapp.app.ui.form.ValidatedTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthLoginScreen(
-    viewModel: AuthLoginViewModel = viewModel(),
-    onLoginSuccess: () -> Unit = {},
-    onForgotPassword: () -> Unit = {},
-    onRegister: () -> Unit = {}
+fun AuthForgotScreen(
+    viewModel: AuthForgotViewModel = viewModel(),
+    onLogin: () -> Unit = {},
+    onCodeSent: (String) -> Unit = {}
 ) {
-    val rememberMe by viewModel.rememberMe.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(uiState) {
-        if (uiState is AuthLoginUiState.Success) {
-            viewModel.resetForm()
-            onLoginSuccess()
+        val state = uiState
+        if (state is AuthForgotUiState.CodeSent) {
             viewModel.resetState()
+            onCodeSent(state.email)
         }
     }
 
@@ -52,6 +49,24 @@ fun AuthLoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = "Забыли пароль?",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF363F48)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Пришлём код восстановления на почту",
+            color = Color(0xFF9E9E9E),
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         ValidatedTextField(
             field = viewModel.emailField,
             label = "Email",
@@ -59,42 +74,12 @@ fun AuthLoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        ValidatedPasswordField(
-            field = viewModel.passwordField,
-            label = "Пароль"
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = rememberMe,
-                    onCheckedChange = viewModel::onRememberMeChange,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFF9A77D9),
-                        uncheckedColor = Color(0xFF9E9E9E)
-                    )
-                )
-                Text("Запомнить меня", color = Color(0xFF424242))
-            }
-            TextButton(onClick = onForgotPassword) {
-                Text("Забыли пароль?", color = Color(0xFF9A77D9))
-            }
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
                 focusManager.clearFocus()
-                viewModel.onLoginClick()
+                viewModel.onSendCodeClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,29 +87,21 @@ fun AuthLoginScreen(
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9A77D9))
         ) {
-            if (uiState is AuthLoginUiState.Loading) {
+            if (uiState is AuthForgotUiState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     color = Color.White,
                     strokeWidth = 2.dp
                 )
             } else {
-                Text("ВОЙТИ", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("ОТПРАВИТЬ КОД", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        FuelAppLogo(modifier = Modifier.size(140.dp))
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        AuthSocialSection(modifier = Modifier.fillMaxWidth())
-
         Spacer(modifier = Modifier.height(12.dp))
 
-        TextButton(onClick = onRegister) {
-            Text("Нет аккаунта? Зарегистрироваться", color = Color(0xFF9A77D9))
+        TextButton(onClick = onLogin) {
+            Text("Вспомнили пароль? Войти", color = Color(0xFF9A77D9))
         }
     }
 }

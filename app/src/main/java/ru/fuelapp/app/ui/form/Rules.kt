@@ -2,14 +2,29 @@ package ru.fuelapp.app.ui.form
 
 import android.util.Patterns
 
-fun required(message: String): Rule<String> = { value ->
-    if (value.isBlank()) message else null
-}
+class Rule<T>(
+    val message: String,
+    val inChecklist: Boolean = false,
+    val check: (T) -> Boolean
+)
 
-fun email(message: String): Rule<String> = { value ->
-    if (!Patterns.EMAIL_ADDRESS.matcher(value).matches()) message else null
-}
+fun required(message: String): Rule<String> =
+    Rule(message) { it.isNotBlank() }
 
-fun minLength(length: Int, message: String): Rule<String> = { value ->
-    if (value.length < length) message else null
-}
+fun email(message: String): Rule<String> =
+    Rule(message) { Patterns.EMAIL_ADDRESS.matcher(it).matches() }
+
+fun minLength(length: Int, message: String, inChecklist: Boolean = false): Rule<String> =
+    Rule(message, inChecklist) { it.length >= length }
+
+fun containsDigit(message: String): Rule<String> =
+    Rule(message, inChecklist = true) { it.any { c -> c.isDigit() } }
+
+fun containsUpperCase(message: String): Rule<String> =
+    Rule(message, inChecklist = true) { it.any { c -> c.isUpperCase() } }
+
+fun code(length: Int, message: String): Rule<String> =
+    Rule(message) { it.length == length && it.all { c -> c.isDigit() } }
+
+fun mustBeChecked(message: String): Rule<Boolean> =
+    Rule(message) { it }
