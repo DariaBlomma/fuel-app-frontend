@@ -14,12 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import ru.fuelapp.app.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.fuelapp.app.R
 import ru.fuelapp.app.ui.components.FuelAppLogo
 import ru.fuelapp.app.ui.form.ValidatedPasswordField
 import ru.fuelapp.app.ui.form.ValidatedTextField
@@ -45,16 +45,14 @@ fun AuthLoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFf7f7f9))
-            .padding(32.dp)
+            .background(Color(0xFFF6F7F9))
+            .padding(horizontal = 24.dp, vertical = 16.dp)
             .pointerInput(Unit) {
                 detectTapGestures { focusManager.clearFocus() }
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
-
         ValidatedTextField(
             field = viewModel.emailField,
             label = "Email",
@@ -62,14 +60,14 @@ fun AuthLoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         ValidatedPasswordField(
             field = viewModel.passwordField,
             label = "Пароль"
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -92,7 +90,7 @@ fun AuthLoginScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
@@ -101,11 +99,9 @@ fun AuthLoginScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(52.dp),
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF9A77D9)
-            )
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9A77D9))
         ) {
             if (uiState is AuthLoginUiState.Loading) {
                 CircularProgressIndicator(
@@ -118,13 +114,12 @@ fun AuthLoginScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        FuelAppLogo(modifier = Modifier.padding(vertical = 48.dp))
+        FuelAppLogo(modifier = Modifier.size(140.dp))
 
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        // Разделитель "или"
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -138,29 +133,22 @@ fun AuthLoginScreen(
             HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFE0E0E0))
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Соцсети: 3 в верхнем ряду, 2 в нижнем
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SocialButton(iconResId = R.drawable.ic_yandex)
-                SocialButton(iconResId = R.drawable.ic_vk)
-                SocialButton(iconResId = R.drawable.ic_max)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                SocialButton(R.drawable.ic_yandex)
+                SocialButton(R.drawable.ic_vk)
+                SocialButton(R.drawable.ic_max)
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SocialButton(iconResId = R.drawable.ic_gosuslugi)
-                SocialButton(iconResId = R.drawable.ic_sber)
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                SocialButton(R.drawable.ic_gosuslugi)
+                SocialButton(R.drawable.ic_sber)
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         TextButton(onClick = { }) {
             Text("Нет аккаунта? Зарегистрироваться", color = Color(0xFF9A77D9))
@@ -169,12 +157,9 @@ fun AuthLoginScreen(
 }
 
 @Composable
-fun SocialButton(
-    iconResId: Int,
-    modifier: Modifier = Modifier
-) {
+fun SocialButton(iconResId: Int, modifier: Modifier = Modifier) {
     Surface(
-        modifier = modifier.size(64.dp),
+        modifier = modifier.size(56.dp),
         shape = CircleShape,
         color = Color.White,
         shadowElevation = 2.dp
@@ -183,7 +168,7 @@ fun SocialButton(
             Icon(
                 painter = painterResource(id = iconResId),
                 contentDescription = null,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(28.dp),
                 tint = Color.Unspecified
             )
         }

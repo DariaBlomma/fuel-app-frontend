@@ -1,7 +1,6 @@
 package ru.fuelapp.app.ui.form
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -100,7 +98,6 @@ private fun ValidatedFieldCore(
     }
 
     Column(modifier = modifier.fillMaxWidth()) {
-        // Звездочка над инпутом, справа
         if (required) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -109,8 +106,9 @@ private fun ValidatedFieldCore(
                 Text(
                     text = "*",
                     color = Color(0xFFE53935),
-                    fontSize = 20.sp,
-                    modifier = Modifier.offset(y = 8.dp)                 )
+                    fontSize = 16.sp,
+                    modifier = Modifier.offset(y = 8.dp)
+                )
             }
         }
 
@@ -131,6 +129,9 @@ private fun ValidatedFieldCore(
                 },
             shape = RoundedCornerShape(8.dp),
             colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                errorContainerColor = Color.White,
                 focusedBorderColor = Color(0xFF9A77D9),
                 unfocusedBorderColor = Color(0xFFE0E0E0),
                 errorBorderColor = Color(0xFFE53935),
@@ -143,7 +144,7 @@ private fun ValidatedFieldCore(
             singleLine = true,
             isError = error != null,
             supportingText = error?.let { message ->
-                { Text(message, color = MaterialTheme.colorScheme.error) }
+                { Text(message, color = Color(0xFFE53935)) }
             }
         )
     }
