@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ru.fuelapp.app.ui.components.FuelAppLogo
 import ru.fuelapp.app.ui.form.ValidatedPasswordField
 import ru.fuelapp.app.ui.form.ValidatedTextField
 
@@ -119,24 +120,7 @@ fun AuthLoginScreen(
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // Логотип FA (вариант A — два Text рядом)
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "F",
-                fontSize = 120.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF9A77D9)
-            )
-            Text(
-                text = "A",
-                fontSize = 120.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF84D2A3)
-            )
-        }
+        FuelAppLogo(modifier = Modifier.padding(vertical = 48.dp))
 
         Spacer(modifier = Modifier.height(48.dp))
 
