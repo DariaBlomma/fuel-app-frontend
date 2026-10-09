@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import ru.fuelapp.app.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -161,16 +163,16 @@ fun AuthLoginScreen(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                SocialButton("Я", Color(0xFFFC3F1D))
-                SocialButton("VK", Color(0xFF0077FF))
-                SocialButton("М", Color(0xFFFF6B00))
+                SocialButton(iconResId = R.drawable.ic_yandex)
+                SocialButton(iconResId = R.drawable.ic_vk)
+                SocialButton(iconResId = R.drawable.ic_max)
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                SocialButton("Г", Color(0xFF0D4CD3))
-                SocialButton("С", Color(0xFF21A038))
+                SocialButton(iconResId = R.drawable.ic_gosuslugi)
+                SocialButton(iconResId = R.drawable.ic_sber)
             }
         }
 
@@ -183,15 +185,23 @@ fun AuthLoginScreen(
 }
 
 @Composable
-fun SocialButton(label: String, color: Color) {
+fun SocialButton(
+    iconResId: Int,
+    modifier: Modifier = Modifier
+) {
     Surface(
-        modifier = Modifier.size(64.dp),
+        modifier = modifier.size(64.dp),
         shape = CircleShape,
         color = Color.White,
         shadowElevation = 2.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(label, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = color)
+            Icon(
+                painter = painterResource(id = iconResId),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = Color.Unspecified
+            )
         }
     }
 }
