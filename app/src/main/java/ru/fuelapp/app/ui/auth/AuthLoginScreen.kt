@@ -1,12 +1,16 @@
 package ru.fuelapp.app.ui.auth
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +42,7 @@ fun AuthLoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color(0xFFf7f7f9))
             .padding(32.dp)
             .pointerInput(Unit) {
                 detectTapGestures { focusManager.clearFocus() }
@@ -45,14 +50,7 @@ fun AuthLoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "FA",
-            fontSize = 72.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         ValidatedTextField(
             field = viewModel.emailField,
@@ -78,12 +76,16 @@ fun AuthLoginScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = rememberMe,
-                    onCheckedChange = viewModel::onRememberMeChange
+                    onCheckedChange = viewModel::onRememberMeChange,
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color(0xFF9A77D9),
+                        uncheckedColor = Color(0xFF9E9E9E)
+                    )
                 )
-                Text("Запомнить меня")
+                Text("Запомнить меня", color = Color(0xFF424242))
             }
             TextButton(onClick = viewModel::onForgotPassword) {
-                Text("Забыли пароль?")
+                Text("Забыли пароль?", color = Color(0xFF9A77D9))
             }
         }
 
@@ -97,74 +99,99 @@ fun AuthLoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
+            shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = Color(0xFF9A77D9)
             )
         ) {
             if (uiState is AuthLoginUiState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     strokeWidth = 2.dp
                 )
             } else {
-                Text("ВОЙТИ", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("ВОЙТИ", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
         }
 
-        if (uiState is AuthLoginUiState.Error) {
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(48.dp))
+
+        // Логотип FA (вариант A — два Text рядом)
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                text = (uiState as AuthLoginUiState.Error).message,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 14.sp
+                text = "F",
+                fontSize = 120.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF9A77D9)
+            )
+            Text(
+                text = "A",
+                fontSize = 120.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF84D2A3)
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(48.dp))
 
+        // Разделитель "или"
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            HorizontalDivider(modifier = Modifier.weight(1f))
+            HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFE0E0E0))
             Text(
                 " или ",
                 modifier = Modifier.padding(horizontal = 16.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color(0xFF9E9E9E)
             )
-            HorizontalDivider(modifier = Modifier.weight(1f))
+            HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFE0E0E0))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        // Соцсети: 3 в верхнем ряду, 2 в нижнем
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SocialButton("G")
-            SocialButton("🍎")
-            SocialButton("VK")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                SocialButton("Я", Color(0xFFFC3F1D))
+                SocialButton("VK", Color(0xFF0077FF))
+                SocialButton("М", Color(0xFFFF6B00))
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                SocialButton("Г", Color(0xFF0D4CD3))
+                SocialButton("С", Color(0xFF21A038))
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         TextButton(onClick = { }) {
-            Text("Нет аккаунта? Зарегистрироваться")
+            Text("Нет аккаунта? Зарегистрироваться", color = Color(0xFF9A77D9))
         }
     }
 }
 
 @Composable
-fun SocialButton(label: String) {
+fun SocialButton(label: String, color: Color) {
     Surface(
-        modifier = Modifier.size(56.dp),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surface,
+        modifier = Modifier.size(64.dp),
+        shape = CircleShape,
+        color = Color.White,
         shadowElevation = 2.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(label, fontSize = 20.sp)
+            Text(label, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = color)
         }
     }
 }
