@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.fuelapp.app.ui.form.ValidatedTextField
+import ru.fuelapp.app.ui.kit.AppButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,27 +77,15 @@ fun AuthForgotScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
+        AppButton(
+            text = "ОТПРАВИТЬ КОД",
             onClick = {
                 focusManager.clearFocus()
                 viewModel.onSendCodeClick()
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9A77D9))
-        ) {
-            if (uiState is AuthForgotUiState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = Color.White,
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Text("ОТПРАВИТЬ КОД", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            }
-        }
+            loading = uiState is AuthForgotUiState.Loading,
+            modifier = Modifier.fillMaxWidth()
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 

@@ -1,5 +1,6 @@
 package ru.fuelapp.app.ui.auth
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -8,20 +9,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import android.net.Uri
+import ru.fuelapp.app.ui.main.MainStubScreen
+import ru.fuelapp.app.ui.onboarding.OnboardingScreen
 
 @Composable
-fun AuthNavGraph(
-    onAuthSuccess: () -> Unit = {},
-    navController: NavHostController = rememberNavController()
-) {
+fun AuthNavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
         startDestination = "login"
     ) {
         composable("login") {
             AuthLoginScreen(
-                onLoginSuccess = onAuthSuccess,
+                onLoginSuccess = {
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
                 onForgotPassword = { navController.navigate("forgot") },
                 onRegister = { navController.navigate("register") }
             )
@@ -30,7 +33,11 @@ fun AuthNavGraph(
         composable("register") {
             AuthRegisterScreen(
                 onLogin = { navController.popBackStack() },
-                onSuccess = onAuthSuccess
+                onSuccess = {
+                    navController.navigate("onboarding") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
             )
         }
 
@@ -56,6 +63,20 @@ fun AuthNavGraph(
                 viewModel = resetViewModel,
                 onSuccess = { navController.popBackStack("login", inclusive = false) }
             )
+        }
+
+        composable("onboarding") {
+            OnboardingScreen(
+                onFinish = {
+                    navController.navigate("main") {
+                        popUpTo("onboarding") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable("main") {
+            MainStubScreen()
         }
     }
 }

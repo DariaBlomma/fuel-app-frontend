@@ -13,9 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FuelAppTheme {
-                AuthNavGraph(
-                    onAuthSuccess = { /* сюда позже повесим переход в основной поток */ }
-                )
+                AuthNavGraph()
             }
         }
     }
