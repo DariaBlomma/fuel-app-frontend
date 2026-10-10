@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.fuelapp.app.ui.main.MainGraph
 import ru.fuelapp.app.ui.main.MainStubScreen
 import ru.fuelapp.app.ui.onboarding.OnboardingScreen
 
@@ -76,7 +77,7 @@ fun AuthNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         composable("main") {
-            MainStubScreen()
+            MainGraph()
         }
     }
 }
